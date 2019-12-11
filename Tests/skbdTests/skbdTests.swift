@@ -1,5 +1,5 @@
-import XCTest
 import class Foundation.Bundle
+import XCTest
 
 final class skbdTests: XCTestCase {
     func testExample() throws {
@@ -26,7 +26,7 @@ final class skbdTests: XCTestCase {
             "Hello, world!",
             "arg: \(skbdBinary.path)",
             "arg: --arg1",
-            "arg: --arg2"
+            "arg: --arg2",
         ].joined(separator: "\n")
 
         XCTAssertEqual(output, expected + "\n")
@@ -34,14 +34,14 @@ final class skbdTests: XCTestCase {
 
     /// Returns path to the built products directory.
     var productsDirectory: URL {
-      #if os(macOS)
-        for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
-            return bundle.bundleURL.deletingLastPathComponent()
-        }
-        fatalError("couldn't find the products directory")
-      #else
-        return Bundle.main.bundleURL
-      #endif
+        #if os(macOS)
+            for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
+                return bundle.bundleURL.deletingLastPathComponent()
+            }
+            fatalError("couldn't find the products directory")
+        #else
+            return Bundle.main.bundleURL
+        #endif
     }
 
     static var allTests = [
