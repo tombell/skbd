@@ -3,19 +3,15 @@ import class Foundation.Bundle
 
 final class skbdTests: XCTestCase {
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-
-        // Some of the APIs that we use below are available in macOS 10.13 and above.
         guard #available(macOS 10.13, *) else {
             return
         }
 
-        let fooBinary = productsDirectory.appendingPathComponent("skbd")
+        let skbdBinary = productsDirectory.appendingPathComponent("skbd")
 
         let process = Process()
-        process.executableURL = fooBinary
+        process.executableURL = skbdBinary
+        process.arguments = ["--arg1", "--arg2"]
 
         let pipe = Pipe()
         process.standardOutput = pipe
@@ -26,7 +22,14 @@ final class skbdTests: XCTestCase {
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: .utf8)
 
-        XCTAssertEqual(output, "Hello, world!\n")
+        let expected = [
+            "Hello, world!",
+            "arg: \(skbdBinary.path)",
+            "arg: --arg1",
+            "arg: --arg2"
+        ].joined(separator: "\n")
+
+        XCTAssertEqual(output, expected + "\n")
     }
 
     /// Returns path to the built products directory.
