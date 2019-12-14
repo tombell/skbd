@@ -27,10 +27,4 @@ package: release
 	@shasum -a 256 $(EXECUTABLE)
 	rm $(EXECUTABLE)
 
-install: release
-	install $(RELEASE_BUILD)/$(EXECUTABLE) $(PREFIX)
-
-uninstall:
-	rm "$(PREFIX)/$(EXECUTABLE)"
-
-.PHONY: all test clean build release package install uninstall
+.PHONY: all test clean build release package
