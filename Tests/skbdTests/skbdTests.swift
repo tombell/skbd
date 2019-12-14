@@ -43,8 +43,4 @@ final class skbdTests: XCTestCase {
             return Bundle.main.bundleURL
         #endif
     }
-
-    static var allTests = [
-        ("testExample", testExample),
-    ]
 }
