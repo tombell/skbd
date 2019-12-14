@@ -14,10 +14,10 @@ class Keybind {
         self.carbonModifiers = carbonModifiers
         self.handler = handler
 
-        KeybindController.register(keybind: self)
+//        KeybindController.register(keybind: self)
     }
 
     deinit {
-        KeybindController.unregister(keybind: self)
+//        KeybindController.unregister(keybind: self)
     }
 }
