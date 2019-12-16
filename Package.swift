@@ -10,15 +10,15 @@ let package = Package(
     targets: [
         .target(
             name: "skbd",
-            dependencies: ["skbdLib"]),
+            dependencies: ["skbdlib"]),
         .target(
-            name: "skbdLib",
+            name: "skbdlib",
             dependencies: []),
         .testTarget(
             name: "skbdTests",
             dependencies: ["skbd"]),
         .testTarget(
-            name: "skbdLibTests",
-            dependencies: ["skbdLib"]),
+            name: "skbdlibTests",
+            dependencies: ["skbdlib"]),
     ]
 )

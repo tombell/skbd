@@ -1,7 +1,7 @@
 import Carbon
 import XCTest
 
-import class skbdLib.Modifier
+import class skbdlib.Modifier
 
 final class ModifierTests: XCTestCase {
     func testShiftModifierFlags() {

@@ -1,7 +1,7 @@
 import Carbon
 import XCTest
 
-import class skbdLib.Key
+import class skbdlib.Key
 
 final class KeyTests: XCTestCase {
     func testRelocatableKeys() {
