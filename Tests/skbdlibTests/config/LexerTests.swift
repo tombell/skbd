@@ -17,7 +17,7 @@ final class LexerTests: XCTestCase {
             .endOfStream,
         ]
 
-        let lexer = Lexer(buffer: input)
+        let lexer = Lexer(input)
 
         for type in expected {
             guard let token = lexer.getToken() else {

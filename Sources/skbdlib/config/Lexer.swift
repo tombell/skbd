@@ -11,7 +11,7 @@ public class Lexer {
     private var pos: Int = 0
     private var readPos: Int = 0
 
-    public init(buffer: String) {
+    public init(_ buffer: String) {
         self.buffer = buffer
 
         advance()
