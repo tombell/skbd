@@ -29,16 +29,7 @@ let keyToCode = [
     "TAB": kVK_Tab,
     "RETURN": kVK_Return,
 
-    "COMMAND": kVK_Command,
-    "RCOMMAND": kVK_RightCommand,
-    "OPTION": kVK_Option,
-    "ROPTION": kVK_RightOption,
-    "CONTROL": kVK_Control,
-    "RCONTROL": kVK_RightControl,
-    "SHIFT": kVK_Shift,
-    "RSHIFT": kVK_RightShift,
-    "FUNCTION": kVK_Function,
-    "CAPSBLOCK": kVK_CapsLock,
+    "CAPSLOCK": kVK_CapsLock,
 
     "PAGE_UP": kVK_PageUp,
     "PAGE_DOWN": kVK_PageDown,
@@ -70,29 +61,8 @@ let keyToCode = [
     "F19": kVK_F19,
     "F20": kVK_F20,
 
-    "PAD0": kVK_ANSI_Keypad0,
-    "PAD1": kVK_ANSI_Keypad1,
-    "PAD2": kVK_ANSI_Keypad2,
-    "PAD3": kVK_ANSI_Keypad3,
-    "PAD4": kVK_ANSI_Keypad4,
-    "PAD5": kVK_ANSI_Keypad5,
-    "PAD6": kVK_ANSI_Keypad6,
-    "PAD7": kVK_ANSI_Keypad7,
-    "PAD8": kVK_ANSI_Keypad8,
-    "PAD9": kVK_ANSI_Keypad9,
-    "PAD_CLEAR": kVK_ANSI_KeypadClear,
-    "PAD_PERIOD": kVK_ANSI_KeypadDecimal,
-    "PAD_DIVIDE": kVK_ANSI_KeypadDivide,
-    "PAD_ENTER": kVK_ANSI_KeypadEnter,
-    "PAD_EQUALS": kVK_ANSI_KeypadEquals,
-    "PAD_MINUS": kVK_ANSI_KeypadMinus,
-    "PAD_MULTIPLY": kVK_ANSI_KeypadMultiply,
-    "PAD_PLUS": kVK_ANSI_KeypadPlus,
-
     "ESCAPE": kVK_Escape,
     "DELETE": kVK_Delete,
-    "FORWARD_DELETE": kVK_ForwardDelete,
-    "HELP": kVK_Help,
 ]
 
 public class Key {
