@@ -1,8 +1,27 @@
 import Foundation
 
-extension StringProtocol {
-    subscript(_ offset: Int) -> Element { self[index(startIndex, offsetBy: offset)] }
-}
+
+
+let modifierIdentifiers = [
+    "shift",
+    "ctrl", "control",
+    "alt", "opt", "option",
+    "cmd", "command",
+    "hyper",
+]
+
+let keyIdentifiers = [
+    "space", "tab", "return", "capslock",
+
+    "pageup", "pagedown",
+    "home", "end",
+    "up", "right", "down", "left",
+
+    "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10",
+    "f11", "f12", "f13", "f14", "f15", "f16", "f17", "f18", "f19", "f20",
+
+    "escape", "delete",
+]
 
 public class Lexer {
     private var buffer: String
@@ -32,8 +51,19 @@ public class Lexer {
         case "#":
             skipComment()
             token = Token(type: .comment, text: String("TODO"))
+        case ":":
+            skipWhitespace()
+            let cmd = readCommand()
+            token = Token(type: .command, text: cmd)
         default:
-            token = Token(type: .unknown, text: String(at))
+            if at.isLetter {
+                let text = readIdentifier()
+                let type = resolveIdentifierType(identifier: text)
+
+                token = Token(type: type, text: text)
+            } else {
+                token = Token(type: .unknown, text: String(at))
+            }
         }
 
         advance()
@@ -62,5 +92,49 @@ public class Lexer {
         while !at.isNewline, at != "\0" {
             advance()
         }
+    }
+
+    private func readCommand() -> String {
+        let start = readPos-1
+
+        while !at.isNewline, at != "\0" {
+            if at == "\\" {
+                advance()
+            }
+
+            advance()
+        }
+
+        return buffer[start..<readPos-1]
+    }
+
+    private func readIdentifier() -> String {
+        let start = readPos-1
+
+        while at.isLetter || at == "_" {
+            advance()
+        }
+
+        while at.isNumber {
+            advance()
+        }
+
+        return buffer[start..<readPos-1]
+    }
+
+    private func resolveIdentifierType(identifier: String) -> TokenType {
+        if identifier.count == 1 {
+            return .key
+        }
+
+        if modifierIdentifiers.contains(identifier) {
+            return .modifier
+        }
+
+        if keyIdentifiers.contains(identifier) {
+            return .literal
+        }
+
+        return .identifier
     }
 }
