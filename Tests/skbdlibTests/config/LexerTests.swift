@@ -6,6 +6,7 @@ final class LexerTests: XCTestCase {
     func testGetToken() {
         let input = """
             +-  -+ -
+            # this if the first comment
                +++ ---    -+-+
             # this is a comment
             # with multiple lines... + - ++
@@ -13,7 +14,10 @@ final class LexerTests: XCTestCase {
 
         let expected: [TokenType] = [
             .plus, .dash, .dash, .plus, .dash,
+            .comment,
             .plus, .plus, .plus, .dash, .dash, .dash, .dash, .plus, .dash, .plus,
+            .comment,
+            .comment,
             .endOfStream,
         ]
 

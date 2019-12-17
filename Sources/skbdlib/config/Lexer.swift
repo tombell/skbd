@@ -31,7 +31,7 @@ public class Lexer {
             token = Token(type: .dash, text: String(at))
         case "#":
             skipComment()
-            token = getToken()
+            token = Token(type: .comment, text: String("TODO"))
         default:
             token = Token(type: .unknown, text: String(at))
         }
