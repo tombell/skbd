@@ -1,9 +1,8 @@
-public class Token {
+public struct Token {
     public var type: TokenType
     public var text: String
 
-    public init(type: TokenType, text: String) {
-        self.type = type
-        self.text = text
+    public var description: String {
+        return "Token {type: \(type), text: \(text)}"
     }
 }
