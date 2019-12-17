@@ -25,44 +25,44 @@ let relocatableKeyCodes = [
 ]
 
 let keyToCode = [
-    "SPACE": kVK_Space,
-    "TAB": kVK_Tab,
-    "RETURN": kVK_Return,
+    "space": kVK_Space,
+    "tab": kVK_Tab,
+    "return": kVK_Return,
 
-    "CAPSLOCK": kVK_CapsLock,
+    "capslock": kVK_CapsLock,
 
-    "PAGE_UP": kVK_PageUp,
-    "PAGE_DOWN": kVK_PageDown,
-    "HOME": kVK_Home,
-    "END": kVK_End,
-    "UP": kVK_UpArrow,
-    "RIGHT": kVK_RightArrow,
-    "DOWN": kVK_DownArrow,
-    "LEFT": kVK_LeftArrow,
+    "pageup": kVK_PageUp,
+    "pagedown": kVK_PageDown,
+    "home": kVK_Home,
+    "end": kVK_End,
+    "up": kVK_UpArrow,
+    "right": kVK_RightArrow,
+    "down": kVK_DownArrow,
+    "left": kVK_LeftArrow,
 
-    "F1": kVK_F1,
-    "F2": kVK_F2,
-    "F3": kVK_F3,
-    "F4": kVK_F4,
-    "F5": kVK_F5,
-    "F6": kVK_F6,
-    "F7": kVK_F7,
-    "F8": kVK_F8,
-    "F9": kVK_F9,
-    "F10": kVK_F10,
-    "F11": kVK_F11,
-    "F12": kVK_F12,
-    "F13": kVK_F13,
-    "F14": kVK_F14,
-    "F15": kVK_F15,
-    "F16": kVK_F16,
-    "F17": kVK_F17,
-    "F18": kVK_F18,
-    "F19": kVK_F19,
-    "F20": kVK_F20,
+    "f1": kVK_F1,
+    "f2": kVK_F2,
+    "f3": kVK_F3,
+    "f4": kVK_F4,
+    "f5": kVK_F5,
+    "f6": kVK_F6,
+    "f7": kVK_F7,
+    "f8": kVK_F8,
+    "f9": kVK_F9,
+    "f10": kVK_F10,
+    "f11": kVK_F11,
+    "f12": kVK_F12,
+    "f13": kVK_F13,
+    "f14": kVK_F14,
+    "f15": kVK_F15,
+    "f16": kVK_F16,
+    "f17": kVK_F17,
+    "f18": kVK_F18,
+    "f19": kVK_F19,
+    "f20": kVK_F20,
 
-    "ESCAPE": kVK_Escape,
-    "DELETE": kVK_Delete,
+    "escape": kVK_Escape,
+    "delete": kVK_Delete,
 ]
 
 public class Key {
@@ -98,17 +98,17 @@ public class Key {
             }
 
             let key = String(utf16CodeUnits: &chars, count: length)
-            keys[key.uppercased()] = keyCode
+            keys[key.lowercased()] = keyCode
         }
 
         return keys
     }()
 
     public static func code(for key: String) -> UInt32 {
-        if let keyCode = relocatableKeys[key.uppercased()] {
+        if let keyCode = relocatableKeys[key.lowercased()] {
             return UInt32(keyCode)
         }
 
-        return UInt32(keyToCode[key.uppercased()] ?? 0)
+        return UInt32(keyToCode[key.lowercased()] ?? 0)
     }
 }

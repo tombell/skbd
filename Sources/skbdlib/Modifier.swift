@@ -2,23 +2,23 @@ import Carbon
 
 public class Modifier {
     public static func flags(for modifiers: [String]) -> UInt32 {
-        let mods = modifiers.map { $0.uppercased() }
+        let mods = modifiers.map { $0.lowercased() }
 
         var flags = 0
 
-        if mods.contains("SHIFT") {
+        if mods.contains("shift") {
             flags |= shiftKey
         }
 
-        if mods.contains("CTRL") || mods.contains("CONTROL") {
+        if mods.contains("ctrl") || mods.contains("control") {
             flags |= controlKey
         }
 
-        if mods.contains("ALT") || mods.contains("OPT") || mods.contains("OPTION") {
+        if mods.contains("alt") || mods.contains("opt") || mods.contains("option") {
             flags |= optionKey
         }
 
-        if mods.contains("CMD") || mods.contains("COMMAND") {
+        if mods.contains("cmd") || mods.contains("command") {
             flags |= cmdKey
         }
 

@@ -30,4 +30,11 @@ final class ModifierTests: XCTestCase {
             UInt32(shiftKey | controlKey | optionKey | cmdKey)
         )
     }
+
+    func testCaseInsensitivity() {
+        XCTAssertEqual(
+            Modifier.flags(for: ["shift", "CTRL", "AlT", "cMd"]),
+            UInt32(shiftKey | controlKey | optionKey | cmdKey)
+        )
+    }
 }
