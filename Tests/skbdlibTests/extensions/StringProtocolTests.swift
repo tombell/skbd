@@ -16,8 +16,8 @@ final class StringProtocolTests: XCTestCase {
     func testStringRangeIndexing() {
         let str = "Hello world 🤦🏻‍♂️"
 
-        XCTAssertEqual(str[0..<5], "Hello")
-        XCTAssertEqual(str[6..<11], "world")
-        XCTAssertEqual(str[12..<13], "🤦🏻‍♂️")
+        XCTAssertEqual(str[0 ..< 5], "Hello")
+        XCTAssertEqual(str[6 ..< 11], "world")
+        XCTAssertEqual(str[12 ..< 13], "🤦🏻‍♂️")
     }
 }

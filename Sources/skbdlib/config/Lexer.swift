@@ -1,7 +1,5 @@
 import Foundation
 
-
-
 let modifierIdentifiers = [
     "shift",
     "ctrl", "control",
@@ -95,7 +93,7 @@ public class Lexer {
     }
 
     private func readCommand() -> String {
-        let start = readPos-1
+        let start = readPos - 1
 
         while !at.isNewline, at != "\0" {
             if at == "\\" {
@@ -105,11 +103,11 @@ public class Lexer {
             advance()
         }
 
-        return buffer[start..<readPos-1]
+        return buffer[start ..< readPos - 1]
     }
 
     private func readIdentifier() -> String {
-        let start = readPos-1
+        let start = readPos - 1
 
         while at.isLetter || at == "_" {
             advance()
@@ -119,7 +117,7 @@ public class Lexer {
             advance()
         }
 
-        return buffer[start..<readPos-1]
+        return buffer[start ..< readPos - 1]
     }
 
     private func resolveIdentifierType(identifier: String) -> TokenType {
