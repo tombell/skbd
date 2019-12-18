@@ -23,7 +23,6 @@ let keyIdentifiers = [
 
 public class Lexer {
     private var buffer: String
-
     private var current = Character("\0")
     private var pos: Int = 0
     private var readPos: Int = 0
