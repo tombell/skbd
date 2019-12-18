@@ -7,6 +7,12 @@ SRC=$(wildcard Sources/skbd/*.swift)
 
 all: build
 
+lint:
+	swiftlint lint
+
+format:
+	swiftformat Sources/**/* Tests/**/*
+
 test:
 	swift test
 
@@ -27,4 +33,4 @@ package: release
 	@shasum -a 256 $(EXECUTABLE)
 	rm $(EXECUTABLE)
 
-.PHONY: all test clean build release package
+.PHONY: all lint format test clean build release package
