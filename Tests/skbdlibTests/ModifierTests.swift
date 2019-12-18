@@ -24,6 +24,10 @@ final class ModifierTests: XCTestCase {
         XCTAssertEqual(Modifier.flags(for: ["command"]), UInt32(cmdKey))
     }
 
+    func testHyperModifierFlags() {
+        XCTAssertEqual(Modifier.flags(for: ["hyper"]), UInt32(cmdKey | optionKey | shiftKey | controlKey))
+    }
+
     func testMultipleModifierFlags() {
         XCTAssertEqual(
             Modifier.flags(for: ["shift", "ctrl", "alt", "cmd"]),

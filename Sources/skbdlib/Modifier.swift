@@ -22,6 +22,10 @@ public class Modifier {
             flags |= cmdKey
         }
 
+        if mods.contains("hyper") {
+            flags |= cmdKey | optionKey | shiftKey | controlKey
+        }
+
         return UInt32(flags)
     }
 }
