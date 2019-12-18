@@ -48,7 +48,7 @@ public class Lexer {
             token = Token(type: .dash, text: String(current))
         case "#":
             skipComment()
-            token = Token(type: .comment, text: String("TODO"))
+            token = Token(type: .comment, text: "")
         case ":":
             skipWhitespace()
             let cmd = readCommand()
