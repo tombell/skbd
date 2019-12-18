@@ -32,7 +32,7 @@ final class LexerTests: XCTestCase {
 
         for type in expected {
             guard let token = lexer.getToken() else {
-                return XCTFail()
+                return XCTFail("getToken() returned nil token")
             }
 
             XCTAssertEqual(token.type, type)

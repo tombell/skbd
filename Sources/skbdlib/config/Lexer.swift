@@ -24,7 +24,7 @@ let keyIdentifiers = [
 public class Lexer {
     private var buffer: String
 
-    private var at = Character("\0")
+    private var current = Character("\0")
     private var pos: Int = 0
     private var readPos: Int = 0
 
@@ -39,13 +39,13 @@ public class Lexer {
 
         var token: Token?
 
-        switch at {
+        switch current {
         case "\0":
-            token = Token(type: .endOfStream, text: String(at))
+            token = Token(type: .endOfStream, text: String(current))
         case "+":
-            token = Token(type: .plus, text: String(at))
+            token = Token(type: .plus, text: String(current))
         case "-":
-            token = Token(type: .dash, text: String(at))
+            token = Token(type: .dash, text: String(current))
         case "#":
             skipComment()
             token = Token(type: .comment, text: String("TODO"))
@@ -54,13 +54,13 @@ public class Lexer {
             let cmd = readCommand()
             token = Token(type: .command, text: cmd)
         default:
-            if at.isLetter {
+            if current.isLetter {
                 let text = readIdentifier()
                 let type = resolveIdentifierType(identifier: text)
 
                 token = Token(type: type, text: text)
             } else {
-                token = Token(type: .unknown, text: String(at))
+                token = Token(type: .unknown, text: String(current))
             }
         }
 
@@ -71,9 +71,9 @@ public class Lexer {
 
     private func advance() {
         if readPos >= buffer.count {
-            at = Character("\0")
+            current = Character("\0")
         } else {
-            at = buffer[readPos]
+            current = buffer[readPos]
         }
 
         pos = readPos
@@ -81,13 +81,13 @@ public class Lexer {
     }
 
     private func skipWhitespace() {
-        while at.isWhitespace {
+        while current.isWhitespace {
             advance()
         }
     }
 
     private func skipComment() {
-        while !at.isNewline, at != "\0" {
+        while !current.isNewline, current != "\0" {
             advance()
         }
     }
@@ -95,8 +95,8 @@ public class Lexer {
     private func readCommand() -> String {
         let start = readPos - 1
 
-        while !at.isNewline, at != "\0" {
-            if at == "\\" {
+        while !current.isNewline, current != "\0" {
+            if current == "\\" {
                 advance()
             }
 
@@ -109,11 +109,11 @@ public class Lexer {
     private func readIdentifier() -> String {
         let start = readPos - 1
 
-        while at.isLetter || at == "_" {
+        while current.isLetter || current == "_" {
             advance()
         }
 
-        while at.isNumber {
+        while current.isNumber {
             advance()
         }
 
