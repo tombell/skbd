@@ -56,8 +56,8 @@ public class Lexer {
             if current.isLetter {
                 let text = readIdentifier()
                 let type = resolveIdentifierType(identifier: text)
-
                 token = Token(type: type, text: text)
+                return token
             } else {
                 token = Token(type: .unknown, text: String(current))
             }
