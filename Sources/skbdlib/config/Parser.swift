@@ -3,8 +3,15 @@ public class Parser {
 
     private var currToken: Token?
 
+    private var keybinds = [Keybind]()
+
     public init(buffer: String) {
         lexer = Lexer(buffer)
+    }
+
+    public func parse() -> [Keybind] {
+        keybinds.removeAll()
+        return keybinds
     }
 
     private func parseKeybind() {
