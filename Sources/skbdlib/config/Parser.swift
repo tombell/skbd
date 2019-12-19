@@ -37,7 +37,7 @@ public class Parser {
 
         if modifier {
             let modifiers = parseModifier()
-            keybind.carbonModifiers = Modifier.flags(for: modifiers)
+            keybind.modifierFlags = Modifier.flags(for: modifiers)
         }
 
         if modifier {
@@ -48,7 +48,7 @@ public class Parser {
 
         if match(type: .key) {
             let key = parseKey()
-            keybind.carbonKeyCode = Key.code(for: key)
+            keybind.keyCode = Key.code(for: key)
         } else {
             fatalError("expected key after dash")
         }

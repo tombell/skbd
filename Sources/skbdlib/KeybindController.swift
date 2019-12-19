@@ -70,7 +70,7 @@ public class KeybindController {
         let eventHotKeyID = EventHotKeyID(signature: signature, id: box.carbonHotKeyID)
         var eventHotKeyRef: EventHotKeyRef?
 
-        guard let carbonKeyCode = keybind.carbonKeyCode, let carbonModifiers = keybind.carbonModifiers else {
+        guard let carbonKeyCode = keybind.keyCode, let carbonModifiers = keybind.modifierFlags else {
             return
         }
 
