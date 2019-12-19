@@ -22,10 +22,9 @@ let keyIdentifiers = [
 ]
 
 public class Lexer {
-    private var buffer: String
+    private var buffer = ""
     private var current = Character("\0")
-    private var pos: Int = 0
-    private var readPos: Int = 0
+    private var readPos = 0
 
     public init(_ buffer: String) {
         self.buffer = buffer
@@ -75,7 +74,6 @@ public class Lexer {
             current = buffer[readPos]
         }
 
-        pos = readPos
         readPos += 1
     }
 
