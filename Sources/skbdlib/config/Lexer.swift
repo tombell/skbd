@@ -18,10 +18,10 @@ public enum TokenType {
 
 public struct Token {
     public var type: TokenType
-    public var text: String
+    public var text: String?
 
     public var description: String {
-        "Token {type: \(type), text: \(text)}"
+        "Token {type: \(type), text: \(text ?? "nil")}"
     }
 }
 
@@ -43,14 +43,14 @@ public class Lexer {
 
         switch current {
         case "\0":
-            token = Token(type: .endOfStream, text: String(current))
+            token = Token(type: .endOfStream)
         case "+":
-            token = Token(type: .plus, text: String(current))
+            token = Token(type: .plus)
         case "-":
-            token = Token(type: .dash, text: String(current))
+            token = Token(type: .dash)
         case "#":
             skipComment()
-            token = Token(type: .comment, text: "")
+            token = Token(type: .comment)
         case ":":
             skipWhitespace()
             let cmd = readCommand()
