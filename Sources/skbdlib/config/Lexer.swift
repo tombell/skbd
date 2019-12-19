@@ -52,6 +52,7 @@ public class Lexer {
             skipComment()
             token = Token(type: .comment)
         case ":":
+            advance()
             skipWhitespace()
             let cmd = readCommand()
             token = Token(type: .command, text: cmd)
