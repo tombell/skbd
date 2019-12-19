@@ -7,6 +7,26 @@ public class Parser {
         lexer = Lexer(buffer)
     }
 
+    private func parseKeybind() {
+        // TODO
+    }
+
+    private func parseModifier() {
+        // TODO
+    }
+
+    private func parseKey() {
+        // TODO
+    }
+
+    private func parseKeyLiteral() {
+        // TODO
+    }
+
+    private func parseCommand() {
+        // TODO
+    }
+
     // Check if the end of file has been reached.
     private func isEndOfFile() -> Bool {
         guard let token = currToken else {
