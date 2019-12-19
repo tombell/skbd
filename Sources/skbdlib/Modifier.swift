@@ -1,5 +1,13 @@
 import Carbon
 
+let modifierIdentifiers = [
+    "shift",
+    "ctrl", "control",
+    "alt", "opt", "option",
+    "cmd", "command",
+    "hyper",
+]
+
 public class Modifier {
     public static func flags(for modifiers: [String]) -> UInt32 {
         let mods = modifiers.map { $0.lowercased() }

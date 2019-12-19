@@ -1,25 +1,29 @@
 import Foundation
 
-let modifierIdentifiers = [
-    "shift",
-    "ctrl", "control",
-    "alt", "opt", "option",
-    "cmd", "command",
-    "hyper",
-]
+public enum TokenType {
+    case endOfStream
+    case unknown
 
-let keyIdentifiers = [
-    "space", "tab", "return", "capslock",
+    case comment
+    case identifier
 
-    "pageup", "pagedown",
-    "home", "end",
-    "up", "right", "down", "left",
+    case command
+    case modifier
+    case key
+    case literal
 
-    "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10",
-    "f11", "f12", "f13", "f14", "f15", "f16", "f17", "f18", "f19", "f20",
+    case plus
+    case dash
+}
 
-    "escape", "delete",
-]
+public struct Token {
+    public var type: TokenType
+    public var text: String
+
+    public var description: String {
+        "Token {type: \(type), text: \(text)}"
+    }
+}
 
 public class Lexer {
     private var buffer = ""
@@ -126,7 +130,7 @@ public class Lexer {
             return .modifier
         }
 
-        if keyIdentifiers.contains(identifier) {
+        if keyToCode.keys.contains(identifier) {
             return .literal
         }
 
