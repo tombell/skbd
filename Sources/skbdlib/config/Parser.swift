@@ -15,23 +15,23 @@ public class Parser {
     }
 
     private func parseKeybind() {
-        // TODO
+        // TODO:
     }
 
     private func parseModifier() {
-        // TODO
+        // TODO:
     }
 
     private func parseKey() {
-        // TODO
+        // TODO:
     }
 
     private func parseKeyLiteral() {
-        // TODO
+        // TODO:
     }
 
     private func parseCommand() {
-        // TODO
+        // TODO:
     }
 
     // Check if the end of file has been reached.
