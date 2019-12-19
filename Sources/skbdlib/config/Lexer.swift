@@ -5,12 +5,9 @@ public enum TokenType {
     case unknown
 
     case comment
-    case identifier
-
-    case command
     case modifier
     case key
-    case literal
+    case command
 
     case plus
     case dash
@@ -131,6 +128,6 @@ public class Lexer {
             return .modifier
         }
 
-        return .identifier
+        return .unknown
     }
 }
