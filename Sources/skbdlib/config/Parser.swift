@@ -1,3 +1,12 @@
+public enum ParserError: Error {
+    case expectedModifier
+    case expectedPlusFollowedByModifier
+    case expectedModifierFollowedByDash
+    case expectedDashFollowedByKey
+    case expectedColonFollowedByCommand
+    case unexpectedNilToken
+}
+
 public class Parser {
     private var lexer: Lexer
 
@@ -10,7 +19,7 @@ public class Parser {
         lexer = Lexer(buffer)
     }
 
-    public func parse() -> [Keybind] {
+    public func parse() throws -> [Keybind] {
         keybinds.removeAll()
 
         advance()
@@ -21,50 +30,50 @@ public class Parser {
             }
 
             if check(type: .modifier) {
-                keybinds.append(parseKeybind())
+                keybinds.append(try parseKeybind())
             } else {
-                fatalError("expected modifier")
+                throw ParserError.expectedModifier
             }
         }
 
         return keybinds
     }
 
-    private func parseKeybind() -> Keybind {
+    private func parseKeybind() throws -> Keybind {
         var keybind = Keybind()
 
         let modifier = match(type: .modifier)
 
         if modifier {
-            let modifiers = parseModifier()
+            let modifiers = try parseModifier()
             keybind.modifierFlags = Modifier.flags(for: modifiers)
         }
 
         if modifier {
             if !match(type: .dash) {
-                fatalError("expected dash after modifiers")
+                throw ParserError.expectedModifierFollowedByDash
             }
         }
 
         if match(type: .key) {
-            let key = parseKey()
+            let key = try parseKey()
             keybind.keyCode = Key.code(for: key)
         } else {
-            fatalError("expected key after dash")
+            throw ParserError.expectedDashFollowedByKey
         }
 
         if match(type: .command) {
-            keybind.command = parseCommand()
+            keybind.command = try parseCommand()
         } else {
-            fatalError("expected colon followed by command")
+            throw ParserError.expectedColonFollowedByCommand
         }
 
         return keybind
     }
 
-    private func parseModifier() -> [String] {
+    private func parseModifier() throws -> [String] {
         guard let token = prevToken, let text = token.text else {
-            fatalError("prevToken or text is nil")
+            throw ParserError.unexpectedNilToken
         }
 
         var modifiers = [String]()
@@ -75,26 +84,26 @@ public class Parser {
 
         if match(type: .plus) {
             if match(type: .modifier) {
-                modifiers.append(contentsOf: parseModifier())
+                modifiers.append(contentsOf: try parseModifier())
             } else {
-                fatalError("expected modifier")
+                throw ParserError.expectedPlusFollowedByModifier
             }
         }
 
         return modifiers
     }
 
-    private func parseKey() -> String {
+    private func parseKey() throws -> String {
         guard let token = prevToken, let text = token.text else {
-            fatalError("prevToken or text is nil")
+            throw ParserError.unexpectedNilToken
         }
 
         return text
     }
 
-    private func parseCommand() -> String {
+    private func parseCommand() throws -> String {
         guard let token = prevToken, let text = token.text else {
-            fatalError("prevToken or text is nil")
+            throw ParserError.unexpectedNilToken
         }
 
         return text
