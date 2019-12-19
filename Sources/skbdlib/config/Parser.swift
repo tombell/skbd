@@ -2,36 +2,102 @@ public class Parser {
     private var lexer: Lexer
 
     private var currToken: Token?
+    private var prevToken: Token?
 
     private var keybinds = [Keybind]()
 
-    public init(buffer: String) {
+    public init(_ buffer: String) {
         lexer = Lexer(buffer)
     }
 
     public func parse() -> [Keybind] {
         keybinds.removeAll()
+
+        advance()
+
+        while !isEndOfFile() {
+            while check(type: .comment) {
+                advance()
+            }
+
+            if check(type: .modifier) {
+                keybinds.append(parseKeybind())
+            } else {
+                fatalError("expected modifier")
+            }
+        }
+
         return keybinds
     }
 
-    private func parseKeybind() {
-        // TODO:
+    private func parseKeybind() -> Keybind {
+        var keybind = Keybind()
+
+        let hasModifier = match(type: .modifier)
+
+        if hasModifier {
+            keybind.carbonModifiers = Modifier.flags(for: parseModifier())
+        }
+
+        if hasModifier {
+            if !match(type: .dash) {
+                fatalError("expected dash after modifiers")
+            }
+        }
+
+        if match(type: .key) {
+            keybind.carbonKeyCode = parseKey()
+        } else if match(type: .literal) {
+            keybind.carbonKeyCode = parseKey()
+        } else {
+            fatalError("expected key after dash")
+        }
+
+        if match(type: .command) {
+            keybind.command = parseCommand()
+        } else {
+            fatalError("expected colon followed by command")
+        }
+
+        return keybind
     }
 
-    private func parseModifier() {
-        // TODO:
+    private func parseModifier() -> [String] {
+        guard let token = prevToken, let text = token.text else {
+            fatalError("prevToken or text is nil")
+        }
+
+        var modifiers = [String]()
+
+        if modifierIdentifiers.contains(text) {
+            modifiers.append(text)
+        }
+
+        if match(type: .plus) {
+            if match(type: .modifier) {
+                modifiers.append(contentsOf: parseModifier())
+            } else {
+                fatalError("expected modifier")
+            }
+        }
+
+        return modifiers
     }
 
-    private func parseKey() {
-        // TODO:
+    private func parseKey() -> UInt32 {
+        guard let token = prevToken, let text = token.text else {
+            fatalError("prevToken or text is nil")
+        }
+
+        return Key.code(for: text)
     }
 
-    private func parseKeyLiteral() {
-        // TODO:
-    }
+    private func parseCommand() -> String {
+        guard let token = prevToken, let text = token.text else {
+            fatalError("prevToken or text is nil")
+        }
 
-    private func parseCommand() {
-        // TODO:
+        return text
     }
 
     // Check if the end of file has been reached.
@@ -46,6 +112,7 @@ public class Parser {
     // Advance to the next token.
     private func advance() {
         if !isEndOfFile() {
+            prevToken = currToken
             currToken = lexer.getToken()
         }
     }
