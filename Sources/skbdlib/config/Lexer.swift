@@ -127,12 +127,12 @@ public class Lexer {
             return .key
         }
 
-        if modifierIdentifiers.contains(identifier) {
-            return .modifier
-        }
-
         if keyToCode.keys.contains(identifier) {
             return .literal
+        }
+
+        if modifierIdentifiers.contains(identifier) {
+            return .modifier
         }
 
         return .identifier
