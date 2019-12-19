@@ -67,17 +67,17 @@ public class KeybindController {
         let box = KeybindBox(keybind: keybind, carbonHotKeyID: keybindsCount)
         keybinds[box.carbonHotKeyID] = box
 
-        let eventHotKeyID = EventHotKeyID(signature: signature, id: box.carbonHotKeyID)
-        var eventHotKeyRef: EventHotKeyRef?
-
-        guard let carbonKeyCode = keybind.keyCode, let carbonModifiers = keybind.modifierFlags else {
+        guard let keyCode = keybind.keyCode, let keyModifiers = keybind.modifierFlags else {
             return
         }
 
+        let keyID = EventHotKeyID(signature: signature, id: box.carbonHotKeyID)
+        var eventHotKeyRef: EventHotKeyRef?
+
         let registerErr = RegisterEventHotKey(
-            carbonKeyCode,
-            carbonModifiers,
-            eventHotKeyID,
+            keyCode,
+            keyModifiers,
+            keyID,
             GetEventDispatcherTarget(),
             0,
             &eventHotKeyRef
