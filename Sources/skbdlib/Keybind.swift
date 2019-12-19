@@ -10,5 +10,6 @@ public struct Keybind {
 
     public var command: String?
 
+    // TODO: handler should probably be a built in func that execs self.command
     public var handler: Handler?
 }
