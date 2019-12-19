@@ -4,7 +4,7 @@ import XCTest
 import class skbdlib.Key
 
 final class KeyTests: XCTestCase {
-    func testRelocatableKeys() {
+    func testKeys() {
         [
             "a": UInt32(kVK_ANSI_A),
             "b": UInt32(kVK_ANSI_B),
@@ -23,7 +23,7 @@ final class KeyTests: XCTestCase {
         ].forEach { key, val in XCTAssertEqual(Key.code(for: key), val) }
     }
 
-    func testKeys() {
+    func testKeyLiterals() {
         [
             "f1": UInt32(kVK_F1),
             "f2": UInt32(kVK_F2),
