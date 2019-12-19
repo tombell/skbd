@@ -12,7 +12,6 @@ final class skbdTests: XCTestCase {
 
         let process = Process()
         process.executableURL = skbdBinary
-        process.arguments = ["--arg1", "--arg2"]
 
         let pipe = Pipe()
         process.standardOutput = pipe
@@ -23,14 +22,7 @@ final class skbdTests: XCTestCase {
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: .utf8)
 
-        let expected = [
-            "Hello, world!",
-            "arg: \(skbdBinary.path)",
-            "arg: --arg1",
-            "arg: --arg2",
-        ].joined(separator: "\n")
-
-        XCTAssertEqual(output, expected + "\n")
+        XCTAssertEqual(output, "skbd\n")
     }
 
     /// Returns path to the built products directory.

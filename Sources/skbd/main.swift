@@ -1,5 +1,3 @@
-print("Hello, world!")
+import Foundation
 
-CommandLine.arguments.forEach { arg in
-    print("arg: " + arg)
-}
+print("skbd")
