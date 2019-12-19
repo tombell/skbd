@@ -19,12 +19,12 @@ final class LexerTests: XCTestCase {
 
         let expected: [TokenType] = [
             .comment,
-            .modifier, .dash, .literal, .command,
+            .modifier, .dash, .key, .command,
             .comment,
             .comment,
             .modifier, .plus, .modifier, .dash, .key, .command,
             .comment,
-            .modifier, .plus, .modifier, .dash, .literal, .command,
+            .modifier, .plus, .modifier, .dash, .key, .command,
             .endOfStream,
         ]
 

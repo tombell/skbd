@@ -33,22 +33,22 @@ public class Parser {
     private func parseKeybind() -> Keybind {
         var keybind = Keybind()
 
-        let hasModifier = match(type: .modifier)
+        let modifier = match(type: .modifier)
 
-        if hasModifier {
-            keybind.carbonModifiers = Modifier.flags(for: parseModifier())
+        if modifier {
+            let modifiers = parseModifier()
+            keybind.carbonModifiers = Modifier.flags(for: modifiers)
         }
 
-        if hasModifier {
+        if modifier {
             if !match(type: .dash) {
                 fatalError("expected dash after modifiers")
             }
         }
 
         if match(type: .key) {
-            keybind.carbonKeyCode = parseKey()
-        } else if match(type: .literal) {
-            keybind.carbonKeyCode = parseKey()
+            let key = parseKey()
+            keybind.carbonKeyCode = Key.code(for: key)
         } else {
             fatalError("expected key after dash")
         }
@@ -84,12 +84,12 @@ public class Parser {
         return modifiers
     }
 
-    private func parseKey() -> UInt32 {
+    private func parseKey() -> String {
         guard let token = prevToken, let text = token.text else {
             fatalError("prevToken or text is nil")
         }
 
-        return Key.code(for: text)
+        return text
     }
 
     private func parseCommand() -> String {

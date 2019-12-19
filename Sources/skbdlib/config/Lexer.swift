@@ -123,12 +123,8 @@ public class Lexer {
     }
 
     private func resolveIdentifierType(identifier: String) -> TokenType {
-        if identifier.count == 1 {
+        if identifier.count == 1 || keyToCode.keys.contains(identifier){
             return .key
-        }
-
-        if keyToCode.keys.contains(identifier) {
-            return .literal
         }
 
         if modifierIdentifiers.contains(identifier) {
