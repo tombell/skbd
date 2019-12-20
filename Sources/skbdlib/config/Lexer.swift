@@ -33,10 +33,10 @@ public class Lexer {
         advance()
     }
 
-    public func getToken() -> Token? {
+    public func getToken() -> Token {
         skipWhitespace()
 
-        var token: Token?
+        var token: Token
 
         switch current {
         case "\0":
