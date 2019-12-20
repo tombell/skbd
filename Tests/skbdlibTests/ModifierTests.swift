@@ -4,38 +4,38 @@ import XCTest
 import class skbdlib.Modifier
 
 final class ModifierTests: XCTestCase {
-    func testShiftModifierFlags() {
+    func testModifierFlagsShift() {
         XCTAssertEqual(Modifier.flags(for: ["shift"]), UInt32(shiftKey))
     }
 
-    func testControlModifierFlags() {
+    func testModifierFlagsControl() {
         XCTAssertEqual(Modifier.flags(for: ["ctrl"]), UInt32(controlKey))
         XCTAssertEqual(Modifier.flags(for: ["control"]), UInt32(controlKey))
     }
 
-    func testOptionModifierFlags() {
+    func testModifierFlagsOption() {
         XCTAssertEqual(Modifier.flags(for: ["alt"]), UInt32(optionKey))
         XCTAssertEqual(Modifier.flags(for: ["opt"]), UInt32(optionKey))
         XCTAssertEqual(Modifier.flags(for: ["option"]), UInt32(optionKey))
     }
 
-    func testCommandModifierFlags() {
+    func testModifierFlagsCommand() {
         XCTAssertEqual(Modifier.flags(for: ["cmd"]), UInt32(cmdKey))
         XCTAssertEqual(Modifier.flags(for: ["command"]), UInt32(cmdKey))
     }
 
-    func testHyperModifierFlags() {
+    func testModifierFlagsHyper() {
         XCTAssertEqual(Modifier.flags(for: ["hyper"]), UInt32(cmdKey | optionKey | shiftKey | controlKey))
     }
 
-    func testMultipleModifierFlags() {
+    func testModifierFlagsMultiple() {
         XCTAssertEqual(
             Modifier.flags(for: ["shift", "ctrl", "alt", "cmd"]),
             UInt32(shiftKey | controlKey | optionKey | cmdKey)
         )
     }
 
-    func testCaseInsensitivity() {
+    func testModifierFlagsCaseInsensitivity() {
         XCTAssertEqual(
             Modifier.flags(for: ["shift", "CTRL", "AlT", "cMd"]),
             UInt32(shiftKey | controlKey | optionKey | cmdKey)

@@ -3,7 +3,7 @@ import XCTest
 import skbdlib
 
 final class StringProtocolTests: XCTestCase {
-    func testStringCharacterIndexing() {
+    func testIndexing() {
         let str = "Hello world 😍"
 
         XCTAssertEqual(str[1], "e")
@@ -12,7 +12,7 @@ final class StringProtocolTests: XCTestCase {
         XCTAssertEqual(str[12], "😍")
     }
 
-    func testStringRangeIndexing() {
+    func testRangeIndexing() {
         let str = "Hello world 🤦🏻‍♂️"
 
         XCTAssertEqual(str[0 ..< 5], "Hello")
