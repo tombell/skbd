@@ -5,6 +5,8 @@ ARCHIVE=$(EXECUTABLE).tar.gz
 
 SRC=$(wildcard Sources/skbd/*.swift)
 
+SWIFTC_FLAGS=-Xswiftc "-target" -Xswiftc "x86_64-apple-macosx10.15"
+
 all: build
 
 lint:
@@ -21,10 +23,10 @@ clean:
 	swift package clean
 
 build: $(SRC)
-	swift build
+	swift build $(SWIFTC_FLAGS)
 
 release: clean
-	swift build --configuration release
+	swift build --configuration release $(SWIFTC_FLAGS)
 
 package: release
 	tar -pvczf $(ARCHIVE) -C $(RELEASE_BUILD) $(EXECUTABLE)
