@@ -49,12 +49,8 @@ public class KeybindController {
             return OSStatus(eventNotHandledErr)
         }
 
-        if let handler = keybind.handler {
-            handler()
-            return noErr
-        }
-
-        return OSStatus(eventNotHandledErr)
+        keybind.handler()
+        return noErr
     }
 
     public static func register(keybind: Keybind) {
@@ -99,6 +95,16 @@ public class KeybindController {
 
         box.keybind = nil
         keybinds.removeValue(forKey: box.carbonHotKeyID)
+    }
+
+    public static func reset() {
+        keybinds.forEach { _, box in
+            guard let keybind = box.keybind else {
+                return
+            }
+
+            self.unregister(keybind: keybind)
+        }
     }
 
     public static func start() {
