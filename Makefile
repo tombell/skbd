@@ -16,7 +16,7 @@ format:
 	swiftformat Sources/**/* Tests/**/*
 
 test:
-	swift test
+	swift test $(SWIFTC_FLAGS)
 
 clean:
 	rm -f $(EXECUTABLE) $(ARCHIVE)
