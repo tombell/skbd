@@ -4,6 +4,9 @@ import PackageDescription
 
 let package = Package(
     name: "skbd",
+    platforms: [
+        .macOS(.v10_15),
+    ],
     dependencies: [
         // .package(url: /* package url */, from: "1.0.0"),
     ],
