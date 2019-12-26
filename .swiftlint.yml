@@ -79,6 +79,9 @@ number_separator:
 
 file_name:
   excluded:
+    - Args.swift
+    - Logging.swift
+    - PidFile.swift
     - main.swift
 
 type_name:
