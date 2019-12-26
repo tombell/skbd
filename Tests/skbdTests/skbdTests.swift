@@ -3,15 +3,12 @@ import XCTest
 import class Foundation.Bundle
 
 final class skbdTests: XCTestCase {
-    func testExample() throws {
-        guard #available(macOS 10.13, *) else {
-            return
-        }
-
+    func testLongVersionFlag() throws {
         let skbdBinary = productsDirectory.appendingPathComponent("skbd")
 
         let process = Process()
         process.executableURL = skbdBinary
+        process.arguments = ["--version"]
 
         let pipe = Pipe()
         process.standardOutput = pipe
@@ -22,7 +19,29 @@ final class skbdTests: XCTestCase {
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: .utf8)
 
-        XCTAssertEqual(output, "skbd\n")
+        XCTAssertNotNil(output)
+        XCTAssertTrue(output!.contains("skbd version "))
+        XCTAssertEqual(process.terminationStatus, 0)
+    }
+
+    func testShortVersionFlag() throws {
+        let skbdBinary = productsDirectory.appendingPathComponent("skbd")
+
+        let process = Process()
+        process.executableURL = skbdBinary
+        process.arguments = ["-v"]
+
+        let pipe = Pipe()
+        process.standardOutput = pipe
+
+        try process.run()
+        process.waitUntilExit()
+
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        let output = String(data: data, encoding: .utf8)
+
+        XCTAssertNotNil(output)
+        XCTAssertTrue(output!.contains("skbd version "))
         XCTAssertEqual(process.terminationStatus, 0)
     }
 
