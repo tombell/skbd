@@ -23,6 +23,7 @@ final class skbdTests: XCTestCase {
         let output = String(data: data, encoding: .utf8)
 
         XCTAssertEqual(output, "skbd\n")
+        XCTAssertEqual(process.terminationStatus, 0)
     }
 
     /// Returns path to the built products directory.
