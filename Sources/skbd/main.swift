@@ -5,15 +5,6 @@ let major = 0
 let minor = 0
 let patch = 1
 
-struct StderrOutputStream: TextOutputStream {
-    func write(_ string: String) { fputs(string, stderr) }
-}
-
-func printError(_ string: String) {
-    var err = StderrOutputStream()
-    print(string, to: &err)
-}
-
 func main(args: [String]) -> Int32 {
     do {
         let arguments = try parseArguments(args)
