@@ -7,7 +7,7 @@ final class ParserTests: XCTestCase {
     func testParseOnlyComment() {
         let input = "# this is just a comment"
 
-        XCTAssertThrowsError(try Parser(input).parse()) { err in
+        XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
             XCTAssertTrue(err is ParserError)
             XCTAssertEqual(err as? ParserError, .expectedModifier)
         }
@@ -16,7 +16,7 @@ final class ParserTests: XCTestCase {
     func testParseMissingModifier() {
         let input = "space: open -a iTerm2.app"
 
-        XCTAssertThrowsError(try Parser(input).parse()) { err in
+        XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
             XCTAssertTrue(err is ParserError)
             XCTAssertEqual(err as? ParserError, .expectedModifier)
         }
@@ -25,7 +25,7 @@ final class ParserTests: XCTestCase {
     func testParseMissingModiferFollowingPlus() {
         let input = "opt + : open -a iTerm2.app"
 
-        XCTAssertThrowsError(try Parser(input).parse()) { err in
+        XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
             XCTAssertTrue(err is ParserError)
             XCTAssertEqual(err as? ParserError, .expectedPlusFollowedByModifier)
         }
@@ -34,7 +34,7 @@ final class ParserTests: XCTestCase {
     func testParseMissingDashFollowingModifier() {
         let input = "opt + ctrl : open -a iTerm2.app"
 
-        XCTAssertThrowsError(try Parser(input).parse()) { err in
+        XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
             XCTAssertTrue(err is ParserError)
             XCTAssertEqual(err as? ParserError, .expectedModifierFollowedByDash)
         }
@@ -43,7 +43,7 @@ final class ParserTests: XCTestCase {
     func testParseMissingKeyFollowingDash() {
         let input = "opt+ctrl-: open -a iTerm2.app"
 
-        XCTAssertThrowsError(try Parser(input).parse()) { err in
+        XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
             XCTAssertTrue(err is ParserError)
             XCTAssertEqual(err as? ParserError, .expectedDashFollowedByKey)
         }
@@ -52,7 +52,7 @@ final class ParserTests: XCTestCase {
     func testParseMissingCommand() {
         let input = "opt+ctrl-a+opt"
 
-        XCTAssertThrowsError(try Parser(input).parse()) { err in
+        XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
             XCTAssertTrue(err is ParserError)
             XCTAssertEqual(err as? ParserError, .expectedColonFollowedByCommand)
         }
@@ -73,7 +73,7 @@ final class ParserTests: XCTestCase {
         """
 
         do {
-            let keybinds = try Parser(input).parse()
+            let keybinds = try ConfigParser(input).parse()
 
             XCTAssertEqual(keybinds[0].keyCode, UInt32(kVK_Space))
             XCTAssertEqual(keybinds[0].modifierFlags, UInt32(optionKey))

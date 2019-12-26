@@ -7,7 +7,7 @@ public enum ParserError: Error {
     case unexpectedNilToken
 }
 
-public class Parser {
+public class ConfigParser {
     private var lexer: Lexer
 
     private var currToken: Token?
