@@ -8,8 +8,8 @@ final class ConfigParserTests: XCTestCase {
         let input = "# this is just a comment"
 
         XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
-            XCTAssertTrue(err is ParserError)
-            XCTAssertEqual(err as? ParserError, .expectedModifier)
+            XCTAssertTrue(err is ConfigParserError)
+            XCTAssertEqual(err as? ConfigParserError, .expectedModifier)
         }
     }
 
@@ -17,8 +17,8 @@ final class ConfigParserTests: XCTestCase {
         let input = "space: open -a iTerm2.app"
 
         XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
-            XCTAssertTrue(err is ParserError)
-            XCTAssertEqual(err as? ParserError, .expectedModifier)
+            XCTAssertTrue(err is ConfigParserError)
+            XCTAssertEqual(err as? ConfigParserError, .expectedModifier)
         }
     }
 
@@ -26,8 +26,8 @@ final class ConfigParserTests: XCTestCase {
         let input = "opt + : open -a iTerm2.app"
 
         XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
-            XCTAssertTrue(err is ParserError)
-            XCTAssertEqual(err as? ParserError, .expectedPlusFollowedByModifier)
+            XCTAssertTrue(err is ConfigParserError)
+            XCTAssertEqual(err as? ConfigParserError, .expectedPlusFollowedByModifier)
         }
     }
 
@@ -35,8 +35,8 @@ final class ConfigParserTests: XCTestCase {
         let input = "opt + ctrl : open -a iTerm2.app"
 
         XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
-            XCTAssertTrue(err is ParserError)
-            XCTAssertEqual(err as? ParserError, .expectedModifierFollowedByDash)
+            XCTAssertTrue(err is ConfigParserError)
+            XCTAssertEqual(err as? ConfigParserError, .expectedModifierFollowedByDash)
         }
     }
 
@@ -44,8 +44,8 @@ final class ConfigParserTests: XCTestCase {
         let input = "opt+ctrl-: open -a iTerm2.app"
 
         XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
-            XCTAssertTrue(err is ParserError)
-            XCTAssertEqual(err as? ParserError, .expectedDashFollowedByKey)
+            XCTAssertTrue(err is ConfigParserError)
+            XCTAssertEqual(err as? ConfigParserError, .expectedDashFollowedByKey)
         }
     }
 
@@ -53,8 +53,8 @@ final class ConfigParserTests: XCTestCase {
         let input = "opt+ctrl-a+opt"
 
         XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
-            XCTAssertTrue(err is ParserError)
-            XCTAssertEqual(err as? ParserError, .expectedColonFollowedByCommand)
+            XCTAssertTrue(err is ConfigParserError)
+            XCTAssertEqual(err as? ConfigParserError, .expectedColonFollowedByCommand)
         }
     }
 

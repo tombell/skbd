@@ -1,4 +1,4 @@
-public enum ParserError: Error {
+public enum ConfigParserError: Error {
     case expectedModifier
     case expectedPlusFollowedByModifier
     case expectedModifierFollowedByDash
@@ -36,7 +36,7 @@ public class ConfigParser {
             if check(type: .modifier) {
                 keybinds.append(try parseKeybind())
             } else {
-                throw ParserError.expectedModifier
+                throw ConfigParserError.expectedModifier
             }
         }
 
@@ -55,7 +55,7 @@ public class ConfigParser {
 
         if modifier {
             if !match(type: .dash) {
-                throw ParserError.expectedModifierFollowedByDash
+                throw ConfigParserError.expectedModifierFollowedByDash
             }
         }
 
@@ -63,13 +63,13 @@ public class ConfigParser {
             let key = try parseKey()
             keybind.keyCode = Key.code(for: key)
         } else {
-            throw ParserError.expectedDashFollowedByKey
+            throw ConfigParserError.expectedDashFollowedByKey
         }
 
         if match(type: .command) {
             keybind.command = try parseCommand()
         } else {
-            throw ParserError.expectedColonFollowedByCommand
+            throw ConfigParserError.expectedColonFollowedByCommand
         }
 
         return keybind
@@ -77,7 +77,7 @@ public class ConfigParser {
 
     private func parseModifier() throws -> [String] {
         guard let token = prevToken, let text = token.text else {
-            throw ParserError.unexpectedNilToken
+            throw ConfigParserError.unexpectedNilToken
         }
 
         var modifiers = [String]()
@@ -90,7 +90,7 @@ public class ConfigParser {
             if match(type: .modifier) {
                 modifiers.append(contentsOf: try parseModifier())
             } else {
-                throw ParserError.expectedPlusFollowedByModifier
+                throw ConfigParserError.expectedPlusFollowedByModifier
             }
         }
 
@@ -99,7 +99,7 @@ public class ConfigParser {
 
     private func parseKey() throws -> String {
         guard let token = prevToken, let text = token.text else {
-            throw ParserError.unexpectedNilToken
+            throw ConfigParserError.unexpectedNilToken
         }
 
         return text
@@ -107,7 +107,7 @@ public class ConfigParser {
 
     private func parseCommand() throws -> String {
         guard let token = prevToken, let text = token.text else {
-            throw ParserError.unexpectedNilToken
+            throw ConfigParserError.unexpectedNilToken
         }
 
         return text
