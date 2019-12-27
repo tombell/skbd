@@ -3,7 +3,7 @@ import XCTest
 
 import skbdlib
 
-final class ParserTests: XCTestCase {
+final class ConfigParserTests: XCTestCase {
     func testParseOnlyComment() {
         let input = "# this is just a comment"
 
