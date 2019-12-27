@@ -1,16 +1,16 @@
 import AppKit
 import skbdlib
 
-let major = 0
-let minor = 0
-let patch = 1
+let majorVersion = 0
+let minorVersion = 0
+let patchVersion = 1
 
 func main(args: [String]) -> Int32 {
     do {
         let arguments = try parseArguments(args)
 
         if arguments.version {
-            print("skbd version \(major).\(minor).\(patch)")
+            print("skbd version \(majorVersion).\(minorVersion).\(patchVersion)")
             return EXIT_SUCCESS
         }
 
