@@ -29,6 +29,10 @@ public class ConfigParser {
                 advance()
             }
 
+            if isEndOfFile() {
+                break
+            }
+
             if check(type: .modifier) {
                 keybinds.append(try parseKeybind())
             } else {
