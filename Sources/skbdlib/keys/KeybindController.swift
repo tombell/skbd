@@ -86,6 +86,10 @@ public class KeybindController {
         box.carbonEventHotKey = eventHotKeyRef
     }
 
+    public static func register(keybinds: [Keybind]) {
+        keybinds.forEach { self.register(keybind: $0) }
+    }
+
     public static func unregister(keybind: Keybind) {
         guard let box = self.box(for: keybind) else {
             return
