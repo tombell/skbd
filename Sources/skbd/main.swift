@@ -19,13 +19,20 @@ func main(args: [String]) -> Int32 {
             return EXIT_SUCCESS
         }
 
-        print("skbd")
+        let config = try String(contentsOfFile: arguments.config)
+        let keybinds = try ConfigParser(config).parse()
+
+        KeybindController.register(keybinds: keybinds)
+        KeybindController.start()
+
+        NSApplication.shared.run()
+
         return EXIT_SUCCESS
     } catch let ArgumentError.missingValue(arg) {
-        printError("skbd: missing value for argument \(arg)")
+        printError("error missing value for argument \(arg)")
         return EXIT_FAILURE
     } catch {
-        printError("skbd: unknown error occurred")
+        printError("error occurred: \(error)")
         return EXIT_FAILURE
     }
 }
