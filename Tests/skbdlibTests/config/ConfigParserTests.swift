@@ -7,10 +7,7 @@ final class ConfigParserTests: XCTestCase {
     func testParseOnlyComment() {
         let input = "# this is just a comment"
 
-        XCTAssertThrowsError(try ConfigParser(input).parse()) { err in
-            XCTAssertTrue(err is ConfigParserError)
-            XCTAssertEqual(err as? ConfigParserError, .expectedModifier)
-        }
+        XCTAssertNoThrow(try ConfigParser(input).parse())
     }
 
     func testParseMissingModifier() {
