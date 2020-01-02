@@ -7,7 +7,11 @@ let patchVersion = 1
 
 func main(args: [String]) -> Int32 {
     do {
-        let arguments = try parseArguments(args)
+        guard let arguments = try parseArguments(args) else {
+            // TODO: print help usage
+            print("skbd usage")
+            return EXIT_SUCCESS
+        }
 
         if arguments.version {
             print("skbd version \(majorVersion).\(minorVersion).\(patchVersion)")

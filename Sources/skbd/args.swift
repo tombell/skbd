@@ -6,7 +6,7 @@ enum ArgumentError: Error {
     case missingValue(for: String)
 }
 
-func parseArguments(_ args: [String]) throws -> Arguments {
+func parseArguments(_ args: [String]) throws -> Arguments? {
     var config: String = ""
     var reload: Bool = false
     var version: Bool = false
@@ -25,6 +25,8 @@ func parseArguments(_ args: [String]) throws -> Arguments {
             reload = true
         case "--version", "-v":
             version = true
+        case "--help", "-h":
+            return nil
         default:
             continue
         }
