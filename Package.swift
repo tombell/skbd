@@ -7,9 +7,7 @@ let package = Package(
     platforms: [
         .macOS(.v10_15),
     ],
-    dependencies: [
-        // .package(url: /* package url */, from: "1.0.0"),
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "skbd",
