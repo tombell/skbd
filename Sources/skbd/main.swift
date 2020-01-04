@@ -10,8 +10,19 @@ var configPath: String = ConfigPath.resolve()
 func main(args: [String]) -> Int32 {
     do {
         guard let arguments = try parseArguments(args) else {
-            // TODO: print help usage
-            print("skbd usage")
+            print("""
+            usage: skbd [arguments]
+
+              --config, -c   the path to the config file
+              --reload, -r   reload the config file
+
+            Special options:
+
+              --help, -h     show this message, then exit
+              --version, -v  show the version number, then exit
+
+            """)
+
             return EXIT_SUCCESS
         }
 
