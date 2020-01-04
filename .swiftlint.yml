@@ -81,7 +81,7 @@ file_name:
   excluded:
     - Args.swift
     - Logging.swift
-    - PidFile.swift
+    - Signals.swift
     - main.swift
 
 type_name:
