@@ -40,8 +40,10 @@ func main(args: [String]) -> Int32 {
         signal(SIGUSR1, handlerSIGUSR1)
         signal(SIGINT, handlerSIGINT)
 
-        defer { KeybindController.stop() }
-        defer { PidFile.remove() }
+        defer {
+            KeybindController.stop()
+            PidFile.remove()
+        }
 
         NSApplication.shared.run()
 
