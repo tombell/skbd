@@ -41,6 +41,4 @@ func main(args: [String]) -> Int32 {
     }
 }
 
-let code = main(args: CommandLine.arguments)
-
-exit(code)
+exit(main(args: CommandLine.arguments))
