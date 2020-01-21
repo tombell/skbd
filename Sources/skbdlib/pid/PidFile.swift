@@ -45,7 +45,7 @@ public class PidFile {
     }
 
     public static func remove() {
-        guard let url = try? self.path() else {
+        guard let url = try? path() else {
             return
         }
 
