@@ -15,7 +15,7 @@ func printError(_ string: String) {
     print(string, to: &err)
 }
 
-struct SkbdArguments: ParsableArguments {
+struct Arguments: ParsableArguments {
     @Option(name: .shortAndLong,
             default: ConfigPath.resolve(),
             help: ArgumentHelp("Path to the configuration file", valueName: "path"))
@@ -28,7 +28,7 @@ struct SkbdArguments: ParsableArguments {
     var version: Bool
 }
 
-let arguments = SkbdArguments.parseOrExit()
+let arguments = Arguments.parseOrExit()
 
 func main(args _: [String]) -> Int32 {
     do {
