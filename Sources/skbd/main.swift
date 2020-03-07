@@ -31,12 +31,12 @@ struct Arguments: ParsableArguments {
 let arguments = Arguments.parseOrExit()
 
 func main(args _: [String]) -> Int32 {
-    do {
-        if arguments.version {
-            print("skbd version \(majorVersion).\(minorVersion).\(patchVersion)")
-            return EXIT_SUCCESS
-        }
+    if arguments.version {
+        print("skbd version \(majorVersion).\(minorVersion).\(patchVersion)")
+        return EXIT_SUCCESS
+    }
 
+    do {
         if arguments.reload {
             let pid = try PidFile.read()
             kill(pid, SIGUSR1)
