@@ -1,19 +1,37 @@
 import AppKit
+import ArgumentParser
 import skbdlib
 
 let majorVersion = 0
 let minorVersion = 0
 let patchVersion = 1
 
-var configPath: String = ConfigPath.resolve()
+struct StderrOutputStream: TextOutputStream {
+    func write(_ string: String) { fputs(string, stderr) }
+}
 
-func main(args: [String]) -> Int32 {
+func printError(_ string: String) {
+    var err = StderrOutputStream()
+    print(string, to: &err)
+}
+
+struct SkbdArguments: ParsableArguments {
+    @Option(name: .shortAndLong,
+            default: ConfigPath.resolve(),
+            help: ArgumentHelp("Path to the configuration file", valueName: "path"))
+    var config: String
+
+    @Flag(name: .shortAndLong, help: "Reload the configuration file")
+    var reload: Bool
+
+    @Flag(name: .shortAndLong, help: "Display version information")
+    var version: Bool
+}
+
+let arguments = SkbdArguments.parseOrExit()
+
+func main(args _: [String]) -> Int32 {
     do {
-        guard let arguments = try parseArguments(args) else {
-            printUsage()
-            return EXIT_SUCCESS
-        }
-
         if arguments.version {
             print("skbd version \(majorVersion).\(minorVersion).\(patchVersion)")
             return EXIT_SUCCESS
@@ -25,20 +43,32 @@ func main(args: [String]) -> Int32 {
             return EXIT_SUCCESS
         }
 
-        if !arguments.config.isEmpty {
-            configPath = arguments.config
-        }
-
         try PidFile.create()
 
-        let config = try String(contentsOfFile: configPath)
+        let config = try String(contentsOfFile: arguments.config)
         let keybinds = try ConfigParser(config).parse()
 
         KeybindController.register(keybinds: keybinds)
         KeybindController.start()
 
-        signal(SIGUSR1, handlerSIGUSR1)
-        signal(SIGINT, handlerSIGINT)
+        signal(SIGUSR1) { _ in
+            do {
+                print("skbd: received SIGUSR1, reloading configuration...")
+
+                let config = try String(contentsOfFile: arguments.config)
+                let keybinds = try ConfigParser(config).parse()
+
+                KeybindController.reset()
+                KeybindController.register(keybinds: keybinds)
+            } catch {
+                printError("skbd: error occurred while reloading configuration, \(error)")
+            }
+        }
+
+        signal(SIGINT) { _ in
+            print("skbd: received SIGINT, terminating...")
+            NSApplication.shared.stop(nil)
+        }
 
         defer {
             KeybindController.stop()
@@ -48,8 +78,6 @@ func main(args: [String]) -> Int32 {
         NSApplication.shared.run()
 
         return EXIT_SUCCESS
-    } catch let ArgumentError.missingValue(arg) {
-        printError("skbd: error parsing arguments, missing value for argument \(arg)")
     } catch PidFileError.missingEnvVarUser {
         printError("skbd: error creating pid file, USER environment variable is not set")
     } catch PidFileError.fileAlreadyExists {
