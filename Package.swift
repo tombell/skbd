@@ -7,11 +7,13 @@ let package = Package(
     platforms: [
         .macOS(.v10_15),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.1"),
+    ],
     targets: [
         .target(
             name: "skbd",
-            dependencies: ["skbdlib"]),
+            dependencies: ["skbdlib", "ArgumentParser"]),
         .target(
             name: "skbdlib",
             dependencies: []),
