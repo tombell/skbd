@@ -6,10 +6,19 @@ let majorVersion = 0
 let minorVersion = 0
 let patchVersion = 1
 
-struct SkbdOptions: ParsableArguments {
+struct StderrOutputStream: TextOutputStream {
+    func write(_ string: String) { fputs(string, stderr) }
+}
+
+func printError(_ string: String) {
+    var err = StderrOutputStream()
+    print(string, to: &err)
+}
+
+struct SkbdArguments: ParsableArguments {
     @Option(name: .shortAndLong,
             default: ConfigPath.resolve(),
-            help: ArgumentHelp("Path to the configuration", valueName: "path"))
+            help: ArgumentHelp("Path to the configuration file", valueName: "path"))
     var config: String
 
     @Flag(name: .shortAndLong, help: "Reload the configuration file")
@@ -19,18 +28,16 @@ struct SkbdOptions: ParsableArguments {
     var version: Bool
 }
 
-var options: SkbdOptions?
+let arguments = SkbdArguments.parseOrExit()
 
 func main(args _: [String]) -> Int32 {
     do {
-        options = SkbdOptions.parseOrExit()
-
-        if options!.version {
+        if arguments.version {
             print("skbd version \(majorVersion).\(minorVersion).\(patchVersion)")
             return EXIT_SUCCESS
         }
 
-        if options!.reload {
+        if arguments.reload {
             let pid = try PidFile.read()
             kill(pid, SIGUSR1)
             return EXIT_SUCCESS
@@ -38,14 +45,30 @@ func main(args _: [String]) -> Int32 {
 
         try PidFile.create()
 
-        let config = try String(contentsOfFile: options!.config)
+        let config = try String(contentsOfFile: arguments.config)
         let keybinds = try ConfigParser(config).parse()
 
         KeybindController.register(keybinds: keybinds)
         KeybindController.start()
 
-        signal(SIGUSR1, handlerSIGUSR1)
-        signal(SIGINT, handlerSIGINT)
+        signal(SIGUSR1) { _ in
+            do {
+                print("skbd: received SIGUSR1, reloading configuration...")
+
+                let config = try String(contentsOfFile: arguments.config)
+                let keybinds = try ConfigParser(config).parse()
+
+                KeybindController.reset()
+                KeybindController.register(keybinds: keybinds)
+            } catch {
+                printError("skbd: error occurred while reloading configuration, \(error)")
+            }
+        }
+
+        signal(SIGINT) { _ in
+            print("skbd: received SIGINT, terminating...")
+            NSApplication.shared.stop(nil)
+        }
 
         defer {
             KeybindController.stop()
