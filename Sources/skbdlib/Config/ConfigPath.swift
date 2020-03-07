@@ -6,7 +6,7 @@ public class ConfigPath {
         "~/.skbdrc",
     ]
 
-    public static func resolve() -> String {
+    public static func resolveDefault() -> String {
         for configPath in primaryPaths {
             let resolvedPath = (configPath as NSString).resolvingSymlinksInPath
 

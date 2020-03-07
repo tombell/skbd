@@ -17,7 +17,7 @@ func printError(_ string: String) {
 
 struct Arguments: ParsableArguments {
     @Option(name: .shortAndLong,
-            default: ConfigPath.resolve(),
+            default: ConfigPath.resolveDefault(),
             help: ArgumentHelp("Path to the configuration file", valueName: "path"))
     var config: String
 
