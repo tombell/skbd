@@ -1,37 +1,44 @@
 import AppKit
+import ArgumentParser
 import skbdlib
 
 let majorVersion = 0
 let minorVersion = 0
 let patchVersion = 1
 
-var configPath: String = ConfigPath.resolve()
+struct SkbdOptions: ParsableArguments {
+    @Option(name: .shortAndLong,
+            default: ConfigPath.resolve(),
+            help: ArgumentHelp("Path to the configuration", valueName: "path"))
+    var config: String
 
-func main(args: [String]) -> Int32 {
+    @Flag(name: .shortAndLong, help: "Reload the configuration file")
+    var reload: Bool
+
+    @Flag(name: .shortAndLong, help: "Display version information")
+    var version: Bool
+}
+
+var options: SkbdOptions?
+
+func main(args _: [String]) -> Int32 {
     do {
-        guard let arguments = try parseArguments(args) else {
-            printUsage()
-            return EXIT_SUCCESS
-        }
+        options = SkbdOptions.parseOrExit()
 
-        if arguments.version {
+        if options!.version {
             print("skbd version \(majorVersion).\(minorVersion).\(patchVersion)")
             return EXIT_SUCCESS
         }
 
-        if arguments.reload {
+        if options!.reload {
             let pid = try PidFile.read()
             kill(pid, SIGUSR1)
             return EXIT_SUCCESS
         }
 
-        if !arguments.config.isEmpty {
-            configPath = arguments.config
-        }
-
         try PidFile.create()
 
-        let config = try String(contentsOfFile: configPath)
+        let config = try String(contentsOfFile: options!.config)
         let keybinds = try ConfigParser(config).parse()
 
         KeybindController.register(keybinds: keybinds)
@@ -48,8 +55,6 @@ func main(args: [String]) -> Int32 {
         NSApplication.shared.run()
 
         return EXIT_SUCCESS
-    } catch let ArgumentError.missingValue(arg) {
-        printError("skbd: error parsing arguments, missing value for argument \(arg)")
     } catch PidFileError.missingEnvVarUser {
         printError("skbd: error creating pid file, USER environment variable is not set")
     } catch PidFileError.fileAlreadyExists {
