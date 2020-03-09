@@ -8,7 +8,7 @@ public enum ConfigParserError: Error {
 }
 
 public class ConfigParser {
-    private var lexer: Lexer
+    private var lexer: ConfigLexer
 
     private var currToken: Token?
     private var prevToken: Token?
@@ -16,7 +16,7 @@ public class ConfigParser {
     private var keybinds = [Keybind]()
 
     public init(_ buffer: String) {
-        lexer = Lexer(buffer)
+        lexer = ConfigLexer(buffer)
     }
 
     public func parse() throws -> [Keybind] {

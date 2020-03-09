@@ -22,7 +22,7 @@ public struct Token {
     }
 }
 
-public class Lexer {
+public class ConfigLexer {
     private var buffer = ""
     private var current = Character("\0")
     private var readPos = 0
