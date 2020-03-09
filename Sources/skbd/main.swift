@@ -6,6 +6,8 @@ let majorVersion = 0
 let minorVersion = 0
 let patchVersion = 1
 
+let defaultConfigPath = "~/.config/skbd/skbdrc"
+
 struct StderrOutputStream: TextOutputStream {
     func write(_ string: String) { fputs(string, stderr) }
 }
@@ -17,7 +19,7 @@ func printError(_ string: String) {
 
 struct Arguments: ParsableArguments {
     @Option(name: .shortAndLong,
-            default: ConfigPath.resolveDefault(),
+            default: defaultConfigPath,
             help: ArgumentHelp("Path to the configuration file", valueName: "path"))
     var config: String
 
