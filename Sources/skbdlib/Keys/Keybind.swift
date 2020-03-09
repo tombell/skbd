@@ -1,6 +1,6 @@
 import Foundation
 
-func resolveShell() -> String {
+private func resolveShell() -> String {
     if let shell = ProcessInfo.processInfo.environment["SHELL"] {
         if !shell.isEmpty {
             return shell
