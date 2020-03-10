@@ -17,6 +17,9 @@ func printError(_ string: String) {
     print(string, to: &err)
 }
 
+// swiftlint:disable let_var_whitespace
+// XXX: re-enable once property wrappers do not trigger this
+
 struct Arguments: ParsableArguments {
     @Option(name: .shortAndLong,
             default: defaultConfigPath,
@@ -30,67 +33,98 @@ struct Arguments: ParsableArguments {
     var version: Bool
 }
 
+// swiftlint:enable let_var_whitespace
+
 let arguments = Arguments.parseOrExit()
+
+func printVersion() -> Int32 {
+    print("skbd version \(majorVersion).\(minorVersion).\(patchVersion)")
+    return EXIT_SUCCESS
+}
+
+func reloadConfig() -> Int32 {
+    do {
+        let pid = try PidFile.read()
+        kill(pid, SIGUSR1)
+        return EXIT_SUCCESS
+    } catch PidFileError.failedToOpenFile {
+        printError("error reading pid file - failed to open pid file")
+    } catch PidFileError.failedToLockFile {
+        printError("error reading pid file - failed to lock pid file")
+    } catch PidFileError.failedToReadFile {
+        printError("error reading pid file - failed to read pid file")
+    } catch {
+        printError("error reading pid file - \(error)")
+    }
+
+    return EXIT_FAILURE
+}
+
+func handleSigUsr1(_: Int32) {
+    do {
+        print("received sigusr1 - reloading configuration...")
+
+        let config = try String(contentsOfFile: arguments.config)
+        let keybinds = try ConfigParser(config).parse()
+
+        KeybindController.reset()
+        KeybindController.register(keybinds: keybinds)
+    } catch {
+        printError("error parsing configuration file - \(error)")
+    }
+}
+
+func handleSigInt(_: Int32) {
+    print("received sigint - terminating...")
+    NSApplication.shared.stop(nil)
+}
 
 func main(args _: [String]) -> Int32 {
     if arguments.version {
-        print("skbd version \(majorVersion).\(minorVersion).\(patchVersion)")
-        return EXIT_SUCCESS
+        return printVersion()
+    }
+
+    if arguments.reload {
+        return reloadConfig()
     }
 
     do {
-        if arguments.reload {
-            let pid = try PidFile.read()
-            kill(pid, SIGUSR1)
-            return EXIT_SUCCESS
-        }
-
         try PidFile.create()
+    } catch PidFileError.failedToOpenFile {
+        printError("error creating pid file - failed to open pid file")
+        return EXIT_FAILURE
+    } catch PidFileError.failedToLockFile {
+        printError("error creating pid file - failed to lock pid file")
+        return EXIT_FAILURE
+    } catch PidFileError.failedToWriteFile {
+        printError("error creating pid file - failed to write pid file")
+        return EXIT_FAILURE
+    } catch {
+        printError("error creating pid file - \(error)")
+        return EXIT_FAILURE
+    }
 
+    do {
         let config = try String(contentsOfFile: arguments.config)
         let keybinds = try ConfigParser(config).parse()
 
         KeybindController.register(keybinds: keybinds)
         KeybindController.start()
-
-        signal(SIGUSR1) { _ in
-            do {
-                print("skbd: received SIGUSR1, reloading configuration...")
-
-                let config = try String(contentsOfFile: arguments.config)
-                let keybinds = try ConfigParser(config).parse()
-
-                KeybindController.reset()
-                KeybindController.register(keybinds: keybinds)
-            } catch {
-                printError("skbd: error occurred while reloading configuration, \(error)")
-            }
-        }
-
-        signal(SIGINT) { _ in
-            print("skbd: received SIGINT, terminating...")
-            NSApplication.shared.stop(nil)
-        }
-
-        defer {
-            KeybindController.stop()
-            PidFile.remove()
-        }
-
-        NSApplication.shared.run()
-
-        return EXIT_SUCCESS
-    } catch PidFileError.missingEnvVarUser {
-        printError("skbd: error creating pid file, USER environment variable is not set")
-    } catch PidFileError.fileAlreadyExists {
-        printError("skbd, error creating pid file, file already exists")
-    } catch PidFileError.failedToCreateFile {
-        printError("skbd: error creating pid file, could not create file")
     } catch {
-        printError("skbd: error occurred, \(error)")
+        printError("error parsing configuration file - \(error)")
+        return EXIT_FAILURE
     }
 
-    return EXIT_FAILURE
+    signal(SIGUSR1, handleSigUsr1)
+    signal(SIGINT, handleSigInt)
+
+    defer {
+        KeybindController.stop()
+    }
+
+    NSApplication.shared.run()
+
+    return EXIT_SUCCESS
 }
 
 exit(main(args: CommandLine.arguments))
