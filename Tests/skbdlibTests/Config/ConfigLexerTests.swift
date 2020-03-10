@@ -2,7 +2,7 @@ import XCTest
 
 import skbdlib
 
-final class LexerTests: XCTestCase {
+final class ConfigLexerTests: XCTestCase {
     func testGetToken() {
         let input = """
             # this if the first comment
