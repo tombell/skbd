@@ -6,7 +6,7 @@ let majorVersion = 0
 let minorVersion = 0
 let patchVersion = 1
 
-let defaultConfigPath = "~/.config/skbd/skbdrc"
+let defaultConfigPath = ("~/.config/skbd/skbdrc" as NSString).resolvingSymlinksInPath
 
 struct StderrOutputStream: TextOutputStream {
     func write(_ string: String) { fputs(string, stderr) }
