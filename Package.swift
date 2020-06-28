@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.2
 
 import PackageDescription
 
@@ -8,12 +8,15 @@ let package = Package(
         .macOS(.v10_15),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.1"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.2.0"),
     ],
     targets: [
         .target(
             name: "skbd",
-            dependencies: ["skbdlib", "ArgumentParser"]),
+            dependencies: [
+                "skbdlib",
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]),
         .target(
             name: "skbdlib",
             dependencies: []),
