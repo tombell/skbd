@@ -15,7 +15,11 @@ public class PidFile {
             throw PidFileError.missingEnvVarUser
         }
 
-        return FileManager.default.temporaryDirectory.appendingPathComponent("skbd_\(user).pid", isDirectory: false).path
+        return FileManager
+            .default
+            .temporaryDirectory
+            .appendingPathComponent("skbd_\(user).pid", isDirectory: false)
+            .path
     }
 
     public static func create() throws {
