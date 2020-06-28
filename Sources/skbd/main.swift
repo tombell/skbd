@@ -22,15 +22,14 @@ func printError(_ string: String) {
 
 struct Arguments: ParsableArguments {
     @Option(name: .shortAndLong,
-            default: defaultConfigPath,
             help: ArgumentHelp("Path to the configuration file", valueName: "path"))
-    var config: String
+    var config: String = defaultConfigPath
 
     @Flag(name: .shortAndLong, help: "Reload the configuration file")
-    var reload: Bool
+    var reload: Bool = false
 
     @Flag(name: .shortAndLong, help: "Display version information")
-    var version: Bool
+    var version: Bool = false
 }
 
 // swiftlint:enable let_var_whitespace
