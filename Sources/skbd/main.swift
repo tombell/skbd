@@ -21,8 +21,7 @@ func printError(_ string: String) {
 // XXX: re-enable once property wrappers do not trigger this
 
 struct Arguments: ParsableArguments {
-    @Option(name: .shortAndLong,
-            help: ArgumentHelp("Path to the configuration file", valueName: "path"))
+    @Option(name: .shortAndLong, help: ArgumentHelp("Path to the configuration file", valueName: "path"))
     var config: String = defaultConfigPath
 
     @Flag(name: .shortAndLong, help: "Reload the configuration file")
