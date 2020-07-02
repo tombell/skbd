@@ -1,3 +1,4 @@
+import Alicia
 import AppKit
 import ArgumentParser
 import skbdlib
@@ -63,10 +64,10 @@ func handleSigUsr1(_: Int32) {
         print("received sigusr1 - reloading configuration...")
 
         let config = try String(contentsOfFile: arguments.config)
-        let keybinds = try ConfigParser(config).parse()
+        let shortcuts = try ConfigParser(config).parse()
 
-        KeybindController.reset()
-        KeybindController.register(keybinds: keybinds)
+        Alicia.reset()
+        Alicia.register(shortcuts: shortcuts)
     } catch {
         printError("error parsing configuration file - \(error)")
     }
@@ -104,10 +105,10 @@ func main(args _: [String]) -> Int32 {
 
     do {
         let config = try String(contentsOfFile: arguments.config)
-        let keybinds = try ConfigParser(config).parse()
+        let shortcuts = try ConfigParser(config).parse()
 
-        KeybindController.register(keybinds: keybinds)
-        KeybindController.start()
+        Alicia.register(shortcuts: shortcuts)
+        Alicia.start()
     } catch {
         printError("error parsing configuration file - \(error)")
         return EXIT_FAILURE
@@ -117,7 +118,7 @@ func main(args _: [String]) -> Int32 {
     signal(SIGINT, handleSigInt)
 
     defer {
-        KeybindController.stop()
+        Alicia.stop()
     }
 
     NSApplication.shared.run()

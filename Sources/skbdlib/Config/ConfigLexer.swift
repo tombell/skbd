@@ -1,3 +1,4 @@
+import Alicia
 import Foundation
 
 public enum TokenType {

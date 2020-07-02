@@ -9,6 +9,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.2.0"),
+        .package(url: "https://github.com/tombell/alicia", from: "1.0.3"),
     ],
     targets: [
         .target(
@@ -19,7 +20,9 @@ let package = Package(
             ]),
         .target(
             name: "skbdlib",
-            dependencies: []),
+            dependencies: [
+                .product(name: "Alicia", package: "alicia"),
+            ]),
         .testTarget(
             name: "skbdTests",
             dependencies: ["skbd"]),

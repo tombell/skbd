@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "alicia",
+        "repositoryURL": "https://github.com/tombell/alicia",
+        "state": {
+          "branch": null,
+          "revision": "a7d575eeec4ad4abbf85b73ab198ea7282a4948c",
+          "version": "1.0.3"
+        }
+      },
+      {
         "package": "swift-argument-parser",
         "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {

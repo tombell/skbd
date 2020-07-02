@@ -1,3 +1,16 @@
+import Alicia
+import Foundation
+
+private func resolveShell() -> String {
+    if let shell = ProcessInfo.processInfo.environment["SHELL"] {
+        if !shell.isEmpty {
+            return shell
+        }
+    }
+
+    return "/bin/bash"
+}
+
 public enum ConfigParserError: Error {
     case expectedModifier
     case expectedPlusFollowedByModifier
@@ -13,14 +26,14 @@ public class ConfigParser {
     private var currToken: Token?
     private var prevToken: Token?
 
-    private var keybinds = [Keybind]()
+    private var shortcuts = [Shortcut]()
 
     public init(_ buffer: String) {
         lexer = ConfigLexer(buffer)
     }
 
-    public func parse() throws -> [Keybind] {
-        keybinds.removeAll()
+    public func parse() throws -> [Shortcut] {
+        shortcuts.removeAll()
 
         advance()
 
@@ -34,23 +47,23 @@ public class ConfigParser {
             }
 
             if check(type: .modifier) {
-                keybinds.append(try parseKeybind())
+                shortcuts.append(try parseShortcuts())
             } else {
                 throw ConfigParserError.expectedModifier
             }
         }
 
-        return keybinds
+        return shortcuts
     }
 
-    private func parseKeybind() throws -> Keybind {
-        var keybind = Keybind()
+    private func parseShortcuts() throws -> Shortcut {
+        var shortcut = Shortcut()
 
         let modifier = match(type: .modifier)
 
         if modifier {
             let modifiers = try parseModifier()
-            keybind.modifierFlags = Modifier.flags(for: modifiers)
+            shortcut.modifierFlags = Modifier.flags(for: modifiers)
         }
 
         if modifier {
@@ -61,18 +74,27 @@ public class ConfigParser {
 
         if match(type: .key) {
             let key = try parseKey()
-            keybind.keyCode = Key.code(for: key)
+            shortcut.keyCode = Key.code(for: key)
         } else {
             throw ConfigParserError.expectedDashFollowedByKey
         }
 
         if match(type: .command) {
-            keybind.command = try parseCommand()
+            let command = try parseCommand()
+
+            let handler: () -> Void = {
+                let proc = Process()
+                proc.executableURL = URL(fileURLWithPath: resolveShell())
+                proc.arguments = ["-c", command]
+                try? proc.run()
+            }
+
+            shortcut.handler = handler
         } else {
             throw ConfigParserError.expectedColonFollowedByCommand
         }
 
-        return keybind
+        return shortcut
     }
 
     private func parseModifier() throws -> [String] {
