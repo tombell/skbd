@@ -3,5 +3,5 @@
 /Packages
 /*.xcodeproj
 xcuserdata/
-Brewfile.lock.json
 skbd.tar.gz
+skbd*.tar.gz
