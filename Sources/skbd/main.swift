@@ -5,7 +5,7 @@ import skbdlib
 
 let majorVersion = 0
 let minorVersion = 0
-let patchVersion = 1
+let patchVersion = 3
 
 let defaultConfigPath = ("~/.config/skbd/skbdrc" as NSString).resolvingSymlinksInPath
 
