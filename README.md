@@ -1,3 +1,3 @@
 # skbd
 
-Stark Keybind Daemon.
+**S**tark **K**ey**b**ind **D**aemon.
