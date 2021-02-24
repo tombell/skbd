@@ -9,7 +9,7 @@ public enum PidFileError: Error {
     case failedToLockFile
 }
 
-public class PidFile {
+public enum PidFile {
     private static func path() throws -> String {
         guard let user = ProcessInfo.processInfo.environment["USER"] else {
             throw PidFileError.missingEnvVarUser
